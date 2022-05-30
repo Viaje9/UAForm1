@@ -48,15 +48,20 @@
           const listValue = [...list[topicIndex].value];
           const currentListValue = listValue[index];
 
-          const setValue = (newValue, currentValue, values) => {
+          const setValue = (newValue, currentValue, values, index) => {
             const conditions = [
               currentListValue === newValue,
               !values.every((v) => v !== newValue),
             ];
-            return conditions.some((e) => e) ? 0 : newValue;
+            values.forEach((v, i) => {
+              if (v === newValue) {
+                values[i] = 0;
+              }
+            });
+            values[index] = currentListValue === newValue ? 0 : newValue;
           };
 
-          listValue[index] = setValue(value, currentListValue, listValue);
+          setValue(value, currentListValue, listValue, index);
           list[topicIndex].value = listValue;
           this.setState({ ...this.state, list });
           const [optionValue1, optionValue2, optionValue3] = list
